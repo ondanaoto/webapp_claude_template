@@ -1,5 +1,6 @@
 # Project
 
+このテンプレートの解説はこちらです!: https://note.com/sugakuyaro/n/n0efec59068d3?sub_rt=share_pb
 <!-- プロジェクト概要 -->
 
 ## 開発環境セットアップ
