@@ -1,7 +1,9 @@
 # Project
 
 このテンプレートの解説はこちらです!: https://note.com/sugakuyaro/n/n0efec59068d3?sub_rt=share_pb
+
 虫食いのようになっており、このままでは動作しないです🙏
+
 動作させられるようにライブラリを追加する等は自分でやってください🙏 Claude Codeでできるはず🙏
 <!-- プロジェクト概要 -->
 
