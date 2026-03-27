@@ -1,0 +1,38 @@
+version: "3"
+
+tasks:
+  proto:gen:
+    desc: Generate TypeScript code from protobuf
+    cmds:
+      - npm install
+      - rm -rf src/gen
+      - npx buf generate
+
+  build:
+    desc: Build web frontend for production
+    cmd: npm run build
+
+  typecheck:
+    desc: Run TypeScript type checking
+    cmd: npx tsc --noEmit
+
+  lint:
+    desc: Run ESLint and TypeScript type checking
+    deps: [typecheck]
+    cmd: npm run lint
+
+  test:
+    desc: Run frontend tests
+    cmd: npm test
+
+  fmt:
+    desc: Format frontend code with Prettier
+    cmd: npm run fmt
+
+  fmt:check:
+    desc: Check frontend code formatting
+    cmd: npm run fmt:check
+
+  storybook:
+    desc: Start Storybook dev server
+    cmd: npm run storybook

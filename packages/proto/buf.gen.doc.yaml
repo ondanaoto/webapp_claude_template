@@ -1,0 +1,10 @@
+version: v2
+plugins:
+  - local: protoc-gen-doc
+    out: ../../docs/generated
+    opt:
+      - markdown,proto.md
+  - local: protoc-gen-doc
+    out: ../../docs/generated
+    opt:
+      - html,proto.html

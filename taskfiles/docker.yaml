@@ -1,0 +1,27 @@
+version: "3"
+
+tasks:
+  up:
+    desc: Start local development environment
+    cmd: docker compose up --build {{.CLI_ARGS}}
+
+  down:
+    desc: Stop local development environment
+    cmd: docker compose down {{.CLI_ARGS}}
+
+  migrate:apply:
+    desc: Rebuild and restart api-server to apply pending migrations
+    cmd: docker compose up --build api-server -d
+
+  dev-server:up:
+    desc: Start dev-server
+    cmd: docker compose -f docker-compose.dev-server.yaml up -d {{.CLI_ARGS}}
+
+  dev-server:down:
+    desc: Stop dev-server
+    cmd: docker compose -f docker-compose.dev-server.yaml down {{.CLI_ARGS}}
+
+  dev-server:logs:
+    desc: Show dev-server logs
+    cmd: docker compose -f docker-compose.dev-server.yaml logs -f {{.CLI_ARGS}}
+

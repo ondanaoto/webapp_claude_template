@@ -1,0 +1,14 @@
+version: "3"
+
+tasks:
+  lint:
+    desc: Lint protobuf files with buf
+    cmd: buf lint
+
+  doc:
+    desc: Generate API docs from proto files
+    internal: true
+    cmds:
+      - go install github.com/pseudomuto/protoc-gen-doc/cmd/protoc-gen-doc@latest
+      - mkdir -p ../../docs/generated
+      - PATH="$(go env GOPATH)/bin:$PATH" buf generate --template buf.gen.doc.yaml

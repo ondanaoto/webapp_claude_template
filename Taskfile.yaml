@@ -1,0 +1,70 @@
+version: "3"
+
+includes:
+  docker:
+    taskfile: ./taskfiles/docker.yaml
+    dir: infrastructure/docker
+  go:
+    taskfile: ./taskfiles/go.yaml
+    dir: apps/api-server
+  ent:
+    taskfile: ./taskfiles/ent.yaml
+    dir: apps/api-server
+  proto:
+    taskfile: ./taskfiles/proto.yaml
+    dir: packages/proto
+  web:
+    taskfile: ./taskfiles/web.yaml
+    dir: apps/web
+
+tasks:
+  default:
+    desc: List all available tasks
+    silent: true
+    cmd: task --list-all
+
+  docs:gen:
+    desc: Generate all docs (index + proto API docs + ERD)
+    deps: [proto:doc, docs:erd]
+
+  docs:erd:
+    desc: Generate ERD from ent schema files
+    internal: true
+    cmd: python3 .claude/skills/erd-generator/scripts/generate_erd.py apps/api-server/ent/schema docs/generated/erd.html
+
+  gen:
+    desc: Run all code generation (proto + ent + docs)
+    deps: [proto:gen, ent:gen, docs:gen]
+
+  proto:gen:
+    desc: Generate all code from protobuf (Go + TypeScript)
+    cmds:
+      - task: go:proto:gen
+      - task: web:proto:gen
+
+  test:
+    desc: Run all tests
+    deps: [go:test, web:test]
+
+  lint:
+    desc: Run all linters
+    cmds:
+      - task: web:fmt
+      - task: lint:all
+
+  lint:all:
+    desc: Run all linters (internal)
+    internal: true
+    deps: [go:lint, proto:lint, web:lint]
+
+  docs:serve:
+    desc: Start Storybook & pkgsite, and open generated HTML docs
+    deps: [docs:gen, web:storybook, go:doc:serve, docs:open]
+
+  docs:open:
+    desc: Open generated HTML docs in browser
+    internal: true
+    cmds:
+      - open docs/generated/erd.html
+      - open docs/generated/proto.html
+      - open http://localhost:6060/github.com/ondanaoto/curripedia/apps/api-server

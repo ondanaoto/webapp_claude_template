@@ -1,0 +1,22 @@
+version: "3"
+
+tasks:
+  proto:gen:
+    desc: Generate Go code from protobuf
+    cmds:
+      - go install google.golang.org/protobuf/cmd/protoc-gen-go@latest
+      - go install connectrpc.com/connect/cmd/protoc-gen-connect-go@latest
+      - rm -rf gen
+      - PATH="$(go env GOPATH)/bin:$PATH" buf generate
+
+  lint:
+    desc: Run golangci-lint on Go code
+    cmd: golangci-lint run --fix ./...
+
+  test:
+    desc: Run Go tests
+    cmd: go test ./...
+
+  doc:serve:
+    desc: Start pkgsite server for browsing Go docs
+    cmd: PATH="$(go env GOPATH)/bin:$PATH" pkgsite -http=:6060

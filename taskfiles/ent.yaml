@@ -1,0 +1,18 @@
+version: "3"
+
+tasks:
+  gen:
+    desc: Generate ent code from schemas
+    cmd: go generate ./ent
+
+  new:
+    desc: Create a new ent schema
+    cmd: go run -mod=mod entgo.io/ent/cmd/ent new {{.CLI_ARGS}}
+
+  migrate:diff:
+    desc: Generate a new Atlas migration from ent schema changes
+    cmd: atlas migrate diff {{.CLI_ARGS}} --env local
+
+  migrate:apply:
+    desc: Apply pending migrations to DATABASE_URL
+    cmd: atlas migrate apply --url "${DATABASE_URL}" --dir "file://ent/migrate/migrations"

@@ -1,0 +1,76 @@
+version: "2"
+
+run:
+  modules-download-mode: readonly
+
+linters:
+  enable:
+    # bugs / correctness
+    - bodyclose
+    - copyloopvar
+    - durationcheck
+    - errcheck
+    - govet
+    - nilerr
+    - sqlclosecheck
+    - staticcheck
+    - unused
+
+    # style / consistency
+    - misspell
+    - revive
+    - unconvert
+    - whitespace
+
+    # complexity / maintenance
+    - cyclop
+    - gocognit
+    - goconst
+    - nestif
+
+    # security
+    - gosec
+
+  settings:
+    cyclop:
+      max-complexity: 15
+    gocognit:
+      min-complexity: 20
+    nestif:
+      min-complexity: 5
+    goconst:
+      min-len: 3
+      min-occurrences: 3
+    revive:
+      rules:
+        - name: blank-imports
+        - name: context-as-argument
+        - name: dot-imports
+        - name: error-return
+        - name: error-strings
+        - name: exported
+        - name: increment-decrement
+        - name: range
+        - name: receiver-naming
+        - name: redefines-builtin-id
+        - name: superfluous-else
+        - name: unreachable-code
+        - name: var-declaration
+  exclusions:
+    paths:
+      - gen
+      - ent
+    paths-except:
+      - ent/schema
+
+formatters:
+  enable:
+    - goimports
+    - golines
+  settings:
+    goimports:
+      local-prefixes:
+        # change to your own package name
+        - github.com/ondanaoto/webapp_claude_template
+    golines:
+      max-len: 120

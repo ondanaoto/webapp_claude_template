@@ -1,0 +1,21 @@
+.env
+.env.dev
+
+# Claude Code
+.claude/settings.local.json
+
+# Vite
+.vite/
+
+# Terraform
+.terraform/
+*.tfstate
+*.tfstate.backup
+*.tfvars
+
+tmp/
+node_modules/
+
+# Generated
+docs/generated/
+docs/README.md

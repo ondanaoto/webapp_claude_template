@@ -1,0 +1,44 @@
+services:
+  db:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    ports:
+      - "${DB_PORT:-5432}:5432"
+    volumes:
+      - db-data:/var/lib/postgresql/data
+
+  api-server:
+    build:
+      context: ../../apps/api-server
+      dockerfile: ../../infrastructure/docker/api-server/Dockerfile
+      target: dev
+    ports:
+      - "${API_PORT:-8080}:${API_PORT:-8080}"
+    volumes:
+      - ../../apps/api-server:/app
+    env_file: .env
+    depends_on:
+      - db
+
+  web:
+    build:
+      context: ../../apps/web
+      dockerfile: ../../infrastructure/docker/web/Dockerfile
+      target: dev
+    ports:
+      - "3000:3000"
+    volumes:
+      - ../../apps/web:/app
+      - ../../packages/proto:/packages/proto
+      - /app/node_modules
+    env_file: .env
+    environment:
+      - API_PROXY_TARGET=http://api-server:${API_PORT:-8080}
+    depends_on:
+      - api-server
+
+volumes:
+  db-data:

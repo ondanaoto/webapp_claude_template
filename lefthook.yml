@@ -1,0 +1,25 @@
+pre-commit:
+  parallel: true
+  commands:
+    go-lint:
+      glob: "*.go"
+      run: task go:lint
+      stage_fixed: true
+    web-fmt:
+      glob: "*.{ts,tsx,js,jsx,json,css}"
+      run: task web:fmt
+      stage_fixed: true
+    web-lint:
+      glob: "*.{ts,tsx,js,jsx}"
+      run: task web:lint
+    proto-lint:
+      glob: "*.proto"
+      run: task proto:lint
+
+pre-push:
+  parallel: true
+  commands:
+    go-test:
+      run: task go:test
+    web-test:
+      run: task web:test
